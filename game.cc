@@ -8,7 +8,7 @@ using namespace std;
 
 Game::Game(){
 	
-	State* intro = new Intro();
+	State* intro = new Intro(this);
 	states.push_back(intro);
 }
 
@@ -22,8 +22,8 @@ void Game::play(){
 	int c;
 	while(!done){
 		clear();
-		states.back()->update();
 		states.back()->draw();
+		states.back()->update();
 		refresh();
 		c = getch();
 		if(c == 'q') done = true;

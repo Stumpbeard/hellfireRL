@@ -5,7 +5,7 @@ LDIR = .
 LIBS = pdcurses
 FLAGS = -L$(LDIR) -l$(LIBS)
 
-diabloRL.exe:  $(HEADS) $(SRC)
+hellfireRL.exe:  $(HEADS) $(SRC)
 	$(CC) -o $@ $(SRC) $(FLAGS)
 	
 clean:

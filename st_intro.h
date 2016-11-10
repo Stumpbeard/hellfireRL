@@ -5,6 +5,8 @@
 #include "global.h"
 #include "curses.h"
 
+struct Game;
+
 struct Intro : State {
 	
 	int display[SCREEN_HEIGHT][SCREEN_WIDTH];
@@ -12,7 +14,7 @@ struct Intro : State {
 	int sH, sW;
 	int revealed;
 	
-	Intro();
+	Intro(Game* game);
 	void update();
 	void draw();
 	

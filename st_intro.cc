@@ -1,4 +1,5 @@
 #include "st_intro.h"
+#include "st_menu.h"
 #include "curses.h"
 #include "game.h"
 #include "global.h"
@@ -8,7 +9,7 @@
 
 using namespace std;
 
-Intro::Intro(){
+Intro::Intro(Game* game){
 	this->game = game;
 	
 	sH = SCREEN_HEIGHT;
@@ -30,6 +31,7 @@ void Intro::update(){
 		}
 	}
 	
+	if(revealed > 104) game->states.push_back(new Menu(game));
 }
 
 void Intro::draw(){
@@ -48,4 +50,5 @@ void Intro::draw(){
 		--offset;
 	}
 	revealed += 4;
+	
 }
