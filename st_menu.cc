@@ -32,5 +32,13 @@ void Menu::draw(){
 	mvprintw(SCREEN_HEIGHT/2 - 3, (SCREEN_WIDTH - strlen(title1))/2, "%s", title5);
 	mvprintw(SCREEN_HEIGHT/2 - 2, (SCREEN_WIDTH - strlen(title1))/2, "%s", title6);
 	mvprintw(SCREEN_HEIGHT/2 - 1, (SCREEN_WIDTH - strlen(title1))/2, "%s", title7);
+	
+	char option0[] = "n) New Game";
+	char option1[] = "c) Continue";
+	char option2[] = "q) Quit";
+	
+	mvprintw(SCREEN_HEIGHT/2 + 3, (SCREEN_WIDTH - strlen(option0))/2, "%s", option0);
+	mvprintw(SCREEN_HEIGHT/2 + 4, (SCREEN_WIDTH - strlen(option0))/2, "%s", option1);
+	mvprintw(SCREEN_HEIGHT/2 + 6, (SCREEN_WIDTH - strlen(option0))/2, "%s", option2);
 
 }
