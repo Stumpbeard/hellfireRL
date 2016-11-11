@@ -17,20 +17,23 @@ void rerollMap();
 
 int main()
 {
-	
+
 	srand(time(NULL));
-	
+
 	initscr();
 	noecho();
 	cbreak();
 	curs_set(0);
 	halfdelay(1);
 	keypad(stdscr, 1);
-	
+
+	start_color();
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);
+
 	Game game;
 	game.play();
 	endwin();
-	
+
 }
 
 void rerollMap(){
@@ -39,14 +42,14 @@ void rerollMap(){
 			mapScreen[y][x] = rand()%(126-33)+33;
 		}
 	}
-	
-	
+
+
 	for(int y = 0; y < SCREEN_HEIGHT; ++y){
 		for(int x = 0; x < SCREEN_WIDTH; ++x){
 			mvaddch(y, x, mapScreen[y][x]);
 		}
 	}
-	
+
 	int offset = revealed;
 	for(int y = 0; y < revealed; ++y){
 		for(int x = offset; x >= 0; --x){
@@ -56,8 +59,8 @@ void rerollMap(){
 		--offset;
 	}
 	revealed += 2;
-	
-	
+
+
 	char instr[] = " Press Q to Quit ";
 	mvprintw(SCREEN_HEIGHT/2-1, (SCREEN_WIDTH-strlen(instr))/2, "%s", instr);
 	move(SCREEN_HEIGHT/2-2, (SCREEN_WIDTH-strlen(instr))/2);

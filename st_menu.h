@@ -6,11 +6,12 @@
 
 
 struct Menu : State {
-	
+
 	Menu(Game* game);
 	void update();
 	void draw();
-	
+
+	int selection;
 };
 
 #endif
