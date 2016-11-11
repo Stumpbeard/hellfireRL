@@ -1,3 +1,3 @@
 # hellfireRL
 
-Diablo based roguelike. Needs pdcurses.dll or equivalent to compile.
+Diablo based roguelike. Needs curses or equivalent to compile/run.

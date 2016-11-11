@@ -4,6 +4,7 @@
 #include "game.h"
 #include "global.h"
 #include "map.h"
+#include "entity.h"
 #include <vector>
 
 struct InPlay : State
@@ -15,6 +16,7 @@ struct InPlay : State
 
     int display[SCREEN_HEIGHT][SCREEN_WIDTH];
     std::vector<Map*> maps;
+    Entity* player;
 };
 
 #endif
