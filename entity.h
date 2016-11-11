@@ -6,7 +6,7 @@
 
 struct Entity
 {
-
+	Entity(){components.resize(3);}
 	std::vector<Component*> components;
 };
 

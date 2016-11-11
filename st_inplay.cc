@@ -50,5 +50,5 @@ void InPlay::draw(){
 			mvaddch(y, x, maps.back()->tile(y, x));
 		}
 	}
-	// mvaddch(static_cast<Position*>(player->components[0])->y, static_cast<Position*>(player->components[0])->x, static_cast<Tile*>(player->components[1])->tile);
+	mvaddch(static_cast<Position*>(player->components[0])->y, static_cast<Position*>(player->components[0])->x, static_cast<Tile*>(player->components[1])->tile);
 }
