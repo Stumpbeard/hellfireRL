@@ -1,6 +1,7 @@
 #include "st_inplay.h"
 #include "curses.h"
 #include "assemblages.h"
+#include "systems.h"
 #include <cstdlib>
 
 using namespace std;
@@ -32,16 +33,14 @@ InPlay::InPlay(Game* game){
 			display[y][x] = grass;
 		}
 	maps.push_back(new Map(display));
+	nocbreak();
+	cbreak();
+	
 
 }
 
 void InPlay::update(){
-	int c = getch();
-	switch(c){
-		case 'q':
-			game->done = true;
-			break;
-	}
+	playerControl(player);
 }
 
 void InPlay::draw(){
@@ -50,5 +49,5 @@ void InPlay::draw(){
 			mvaddch(y, x, maps.back()->tile(y, x));
 		}
 	}
-	mvaddch(static_cast<Position*>(player->components[0])->y, static_cast<Position*>(player->components[0])->x, static_cast<Tile*>(player->components[1])->tile);
+	displayEnt(player);
 }

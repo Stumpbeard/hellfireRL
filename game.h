@@ -13,7 +13,6 @@ struct Game {
 	Game();
 
 	std::vector<State*> states;
-	bool done;
 
 	void play();
 

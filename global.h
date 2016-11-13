@@ -3,5 +3,6 @@
 
 const int SCREEN_HEIGHT = 24;
 const int SCREEN_WIDTH = 80;
+extern bool done;
 
 #endif

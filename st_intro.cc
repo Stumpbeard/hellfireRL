@@ -29,7 +29,7 @@ void Intro::update(){
 	int c = getch();
 	switch(c){
 		case 'q':
-			game->done = true;
+			done = true;
 			break;
 	}
 

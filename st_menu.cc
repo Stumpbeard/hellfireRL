@@ -17,7 +17,7 @@ void Menu::update(){
 	while(true){
 		switch(c){
 			case 'q':
-				game->done = true;
+				done = true;
 				break;
 			case 'n':
 				game->states.push_back(new InPlay(game));
