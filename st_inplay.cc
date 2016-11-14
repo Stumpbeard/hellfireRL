@@ -10,7 +10,7 @@ InPlay::InPlay(Game* game){
 	this->game = game;
 	player = makePlayer(10, 10, '@', true);
 
-	for(int y = 0; y < SCREEN_HEIGHT; ++y)
+	/*for(int y = 0; y < SCREEN_HEIGHT; ++y)
 		for(int x = 0; x < SCREEN_WIDTH; ++x){
 			int grass = rand()%5;
 			switch(grass){
@@ -31,11 +31,11 @@ InPlay::InPlay(Game* game){
 					break;
 			}
 			display[y][x] = grass;
-		}
-	maps.push_back(new Map(display));
+		} */
+	maps.push_back(new Map());
 	nocbreak();
 	cbreak();
-	
+
 
 }
 
@@ -44,10 +44,8 @@ void InPlay::update(){
 }
 
 void InPlay::draw(){
-	for(int y = 0; y < SCREEN_HEIGHT; ++y){
-		for(int x = 0; x < SCREEN_WIDTH; ++x){
-			mvaddch(y, x, maps.back()->tile(y, x));
-		}
+	for(int i = 0; i < maps.back()->map.size(); ++i){
+		displayEnt(maps.back()->map[i]);
 	}
 	displayEnt(player);
 }

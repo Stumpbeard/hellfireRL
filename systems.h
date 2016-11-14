@@ -17,9 +17,12 @@ void displayEnt(Entity* ent)
 
 	int y = p->y;
 	int x = p->x;
-	int tile = t->tile;
+	int tile = t->art;
+	bool vis = t->visible;
 
+	if(!vis) attron(A_DIM);
 	mvaddch(y, x, tile);
+	attroff(A_DIM);
 }
 
 void moveEnt(Entity* ent, int dir)

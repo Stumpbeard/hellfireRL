@@ -2,13 +2,15 @@
 #define	MAP_H
 
 #include "global.h"
+#include "entity.h"
+#include <vector>
+#include "assemblages.h"
+
 
 struct Map {
 
-	Map(int in[SCREEN_HEIGHT][SCREEN_WIDTH]);
-	int map[SCREEN_HEIGHT][SCREEN_WIDTH];
-
-	int tile(int y, int x);
+	Map();
+	std::vector<Entity*> map;
 
 };
 
