@@ -9,7 +9,7 @@ Entity* makePlayer(int y, int x, int t, bool c){
 	Entity* player = new Entity();
 
 	player->components[0] = new Position(y, x);
-	player->components[1] = new Tile(t, true, 32, true);
+	player->components[1] = new Tile(t, true, 32, true, true);
 	player->components[2] = new PlayerControllable(c);
 	return player;
 }

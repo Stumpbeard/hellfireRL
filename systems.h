@@ -19,10 +19,13 @@ void displayEnt(Entity* ent)
 	int x = p->x;
 	int tile = t->art;
 	bool vis = t->visible;
+	bool rev = t->revealed;
 
-	if(!vis) attron(COLOR_PAIR(2));
+	if(!vis && !rev) attron(COLOR_PAIR(2));
+	else if(!vis) attron(COLOR_PAIR(3));
 	mvaddch(y, x, tile);
 	attroff(COLOR_PAIR(2));
+	attroff(COLOR_PAIR(3));
 }
 
 void moveEnt(Entity* ent, int dir)
@@ -80,6 +83,7 @@ void adjustLOS(Entity* ent, Map* curmap)
 			if(tx >= x-5 && tx <= x+5)
 			{
 				tt->visible = true;
+				tt->revealed = true;
 			}
 			else
 			 {
