@@ -1,5 +1,6 @@
-#include "assemblages.h"
+#include <cstdlib>
 
+#include "assemblages.h"
 #include "comp_position.h"
 #include "comp_tile.h"
 #include "comp_playerControllable.h"
