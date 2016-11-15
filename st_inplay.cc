@@ -33,6 +33,7 @@ InPlay::InPlay(Game* game){
 			display[y][x] = grass;
 		} */
 	maps.push_back(new Map());
+	adjustLOS(player, maps.back());
 	nocbreak();
 	cbreak();
 
@@ -41,6 +42,7 @@ InPlay::InPlay(Game* game){
 
 void InPlay::update(){
 	playerControl(player);
+	adjustLOS(player, maps.back());
 }
 
 void InPlay::draw(){

@@ -20,9 +20,9 @@ void displayEnt(Entity* ent)
 	int tile = t->art;
 	bool vis = t->visible;
 
-	if(!vis) attron(A_DIM);
+	if(!vis) attron(COLOR_PAIR(2));
 	mvaddch(y, x, tile);
-	attroff(A_DIM);
+	attroff(COLOR_PAIR(2));
 }
 
 void moveEnt(Entity* ent, int dir)
@@ -60,6 +60,36 @@ void playerControl(Entity* ent)
 		case 'q':
 			done = true;
 			break;
+	}
+}
+
+void adjustLOS(Entity* ent, Map* curmap)
+{
+	Position* pc = dynamic_cast<Position*>(ent->components[0]);
+	int y = pc->y;
+	int x = pc->x;
+
+	for(int i = 0; i < curmap->map.size(); ++i){
+		Position* pt = dynamic_cast<Position*>(curmap->map[i]->components[0]);
+		Tile* tt = dynamic_cast<Tile*>(curmap->map[i]->components[1]);
+		int ty = pt->y;
+		int tx = pt->x;
+
+		if(ty >= y-5 && ty <= y+5)
+		{
+			if(tx >= x-5 && tx <= x+5)
+			{
+				tt->visible = true;
+			}
+			else
+			 {
+				tt->visible = false;
+			}
+		}
+		else
+		{
+			tt->visible = false;
+		}
 	}
 }
 
