@@ -132,6 +132,8 @@ void adjustLOS(Entity* ent, Map* curmap)
 					if(bt == NULL) continue;
 					bt->visible = true;
 					bt->revealed = true;
+					if(bt->solid) break;
+
 		        }
 		    }
 		    else
@@ -155,6 +157,7 @@ void adjustLOS(Entity* ent, Map* curmap)
 					if(bt == NULL) continue;
 					bt->visible = true;
 					bt->revealed = true;
+					if(bt->solid) break;
 		        }
 		    }
 		}

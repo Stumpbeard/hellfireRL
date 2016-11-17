@@ -40,3 +40,12 @@ Entity* makeGrass(int y, int x){
 	return grass;
 
 }
+
+Entity* makePillar(int y, int x){
+	Entity* pillar = new Entity();
+
+	pillar->components[0] = new Position(y, x);
+	pillar->components[1] = new Tile('O', true, 0);
+
+	return pillar;
+}
