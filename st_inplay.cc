@@ -46,8 +46,9 @@ void InPlay::update(){
 }
 
 void InPlay::draw(){
-	for(int i = 0; i < maps.back()->map.size(); ++i){
-		displayEnt(maps.back()->map[i]);
+	for(int y = 0; y < SCREEN_HEIGHT; ++y){
+		for(int x = 0; x < SCREEN_WIDTH; ++x)
+			displayEnt(maps.back()->map[y][x]);
 	}
 	displayEnt(player);
 }
