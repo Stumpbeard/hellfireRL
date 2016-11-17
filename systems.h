@@ -106,7 +106,7 @@ void adjustLOS(Entity* ent, Map* curmap)
 		    signed char const iy((delta_y > 0) - (delta_y < 0));
 		    delta_y = std::abs(delta_y) << 1;
 
-			Tile* bt = dynamic_cast<Tile*>(curmap->map[y][x]->components[1]);
+			Tile* bt = dynamic_cast<Tile*>(curmap->map[y1][x1]->components[1]);
 			if(bt == NULL) continue;
 			bt->visible = true;
 			bt->revealed = true;
@@ -128,7 +128,7 @@ void adjustLOS(Entity* ent, Map* curmap)
 		            error += delta_y;
 		            x1 += ix;
 
-					Tile* bt = dynamic_cast<Tile*>(curmap->map[y][x]->components[1]);
+					Tile* bt = dynamic_cast<Tile*>(curmap->map[y1][x1]->components[1]);
 					if(bt == NULL) continue;
 					bt->visible = true;
 					bt->revealed = true;
@@ -153,7 +153,7 @@ void adjustLOS(Entity* ent, Map* curmap)
 		            error += delta_x;
 		            y1 += iy;
 
-					Tile* bt = dynamic_cast<Tile*>(curmap->map[y][x]->components[1]);
+					Tile* bt = dynamic_cast<Tile*>(curmap->map[y1][x1]->components[1]);
 					if(bt == NULL) continue;
 					bt->visible = true;
 					bt->revealed = true;

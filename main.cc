@@ -24,7 +24,7 @@ int main()
 	start_color();
 	init_pair(1, COLOR_BLACK, COLOR_WHITE);
 	init_pair(2, COLOR_BLACK, COLOR_BLACK);
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);
+	init_pair(3, COLOR_RED, COLOR_BLACK);
 
 	Game game;
 	game.play();
