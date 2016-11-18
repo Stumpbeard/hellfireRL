@@ -4,6 +4,7 @@
 #include "comp_position.h"
 #include "comp_tile.h"
 #include "comp_playerControllable.h"
+#include "comp_lineOfSight.h"
 
 Entity* makePlayer(int y, int x, int t, bool c){
 	Entity* player = new Entity();
@@ -11,6 +12,7 @@ Entity* makePlayer(int y, int x, int t, bool c){
 	player->components[0] = new Position(y, x);
 	player->components[1] = new Tile(t, true, 32, true, true);
 	player->components[2] = new PlayerControllable(c);
+	player->components[3] = new LineOfSight(10);
 	return player;
 }
 

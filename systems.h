@@ -10,8 +10,9 @@
 #include "comp_position.h"
 #include "comp_tile.h"
 #include "comp_playerControllable.h"
+#include "comp_lineOfSight.h"
 
-void displayEnt(Entity* ent)
+void displayEnt(Entity* ent, Map* m)
 {
 	Position* p = dynamic_cast<Position*>(ent->components[0]);
 	Tile* t = dynamic_cast<Tile*>(ent->components[1]);
@@ -21,31 +22,96 @@ void displayEnt(Entity* ent)
 	}
 
 	int y = p->y;
+	if(y < 0 || y >= SCREEN_HEIGHT) return;
 	int x = p->x;
+	if(x < 0 || x >= SCREEN_WIDTH) return;
 	int tile = t->art;
 	bool vis = t->visible;
 	bool rev = t->revealed;
 
-	if(!vis && !rev) attron(COLOR_PAIR(2));
-	else if(!vis) attron(COLOR_PAIR(3));
-	mvaddch(y, x, tile);
-	attroff(COLOR_PAIR(2));
-	attroff(COLOR_PAIR(3));
+	bool isWall = false;
+
+	if(tile == 'O') isWall = true;
+	bool nW = false;
+	bool sW = false;
+	bool wW = false;
+	bool eW = false;
+
+	Tile* nWall = NULL;
+	Tile* sWall = NULL;
+	Tile* wWall = NULL;
+	Tile* eWall = NULL;
+
+	// find neighboring walls to change tile
+	if(isWall){
+		if(y-1 >= 0) nWall = dynamic_cast<Tile*>(m->map[y-1][x]->components[1]);
+		if(y+1 <= SCREEN_HEIGHT-1) sWall = dynamic_cast<Tile*>(m->map[y+1][x]->components[1]);
+		if(x-1 >= 0) wWall = dynamic_cast<Tile*>(m->map[y][x-1]->components[1]);
+		if(x+1 <= SCREEN_WIDTH-1) eWall = dynamic_cast<Tile*>(m->map[y][x+1]->components[1]);
+
+		if(nWall != NULL) nW = nWall->art == 'O' ? true : false;
+		if(sWall != NULL) sW = sWall->art == 'O' ? true : false;
+		if(wWall != NULL) wW = wWall->art == 'O' ? true : false;
+		if(eWall != NULL) eW = eWall->art == 'O' ? true : false;
+
+		if(sW && eW && nW && wW) tile = ACS_PLUS;
+		else if(sW && eW && wW) tile = ACS_TTEE;
+		else if(eW && nW && wW) tile = ACS_BTEE;
+		else if(nW && eW && sW) tile = ACS_LTEE;
+		else if(nW && wW && sW) tile = ACS_RTEE;
+		else if(sW && eW) tile = ACS_ULCORNER;
+		else if(nW && eW) tile = ACS_LLCORNER;
+		else if(wW && sW) tile = ACS_URCORNER;
+		else if(wW && nW) tile = ACS_LRCORNER;
+		else if(nW && sW) tile = ACS_VLINE;
+		else if(wW && eW) tile = ACS_HLINE;
+		else tile = 'O';
+
+		if(!vis && !rev) attron(COLOR_PAIR(2));
+		else if(!vis) attron(COLOR_PAIR(3));
+		mvaddch(y, x, tile);
+		attroff(COLOR_PAIR(2));
+		attroff(COLOR_PAIR(3));
+	}
+
+	else {
+		if(!vis && !rev) attron(COLOR_PAIR(2));
+		else if(!vis) attron(COLOR_PAIR(3));
+		mvaddch(y, x, tile);
+		attroff(COLOR_PAIR(2));
+		attroff(COLOR_PAIR(3));
+	}
 
 	if(pc == NULL) t->visible = false;
 }
 
-void moveEnt(Entity* ent, int dir)
+void moveEnt(Entity* ent, int dir, Map* m)
 {
 	Position* p = dynamic_cast<Position*>(ent->components[0]);
 	if(p == NULL){
 		return;
 	}
 
-	if(dir == KEY_UP) p->y--;
-	if(dir == KEY_DOWN) p->y++;
-	if(dir == KEY_LEFT) p->x--;
-	if(dir == KEY_RIGHT) p->x++;
+	if(dir == KEY_UP || dir == KEY_A2){
+		if(p->y > 0)
+			if(!dynamic_cast<Tile*>(m->map[p->y-1][p->x]->components[1])->solid)
+				p->y--;
+	}
+	if(dir == KEY_DOWN || dir == KEY_C2){
+		if(p->y < SCREEN_HEIGHT-1)
+			if(!dynamic_cast<Tile*>(m->map[p->y+1][p->x]->components[1])->solid)
+				p->y++;
+	}
+	if(dir == KEY_LEFT || dir == KEY_B1){
+		if(p->x > 0)
+			if(!dynamic_cast<Tile*>(m->map[p->y][p->x-1]->components[1])->solid)
+				p->x--;
+	}
+	if(dir == KEY_RIGHT || dir == KEY_B3){
+		if(p->x < SCREEN_WIDTH-1)
+			if(!dynamic_cast<Tile*>(m->map[p->y][p->x+1]->components[1])->solid)
+				p->x++;
+	}
 }
 
 void playerControl(Entity* ent, Map* m)
@@ -60,16 +126,16 @@ void playerControl(Entity* ent, Map* m)
 	int c = getch();
 	switch(c){
 		case KEY_UP:
-			moveEnt(ent, KEY_UP);
+			moveEnt(ent, KEY_UP, m);
 			break;
 		case KEY_DOWN:
-			moveEnt(ent, KEY_DOWN);
+			moveEnt(ent, KEY_DOWN, m);
 			break;
 		case KEY_LEFT:
-			moveEnt(ent, KEY_LEFT);
+			moveEnt(ent, KEY_LEFT, m);
 			break;
 		case KEY_RIGHT:
-			moveEnt(ent, KEY_RIGHT);
+			moveEnt(ent, KEY_RIGHT, m);
 			break;
 		case 'q':
 			done = true;
@@ -80,13 +146,14 @@ void playerControl(Entity* ent, Map* m)
 void adjustLOS(Entity* ent, Map* curmap)
 {
 	Position* pc = dynamic_cast<Position*>(ent->components[0]);
-	if(pc == NULL) return;
+	LineOfSight* plos = dynamic_cast<LineOfSight*>(ent->components[3]);
+	if(pc == NULL || plos == NULL) return;
 	int py = pc->y;
 	int px = pc->x;
 
 
 
-	int los = 5;
+	int los = plos->los;
 	for(int y = py-los; y <= py+los; ++y){
 		if(y < 0 || y >= SCREEN_HEIGHT) continue;
 		for(int x = px-los; x <= px+los; ++x){

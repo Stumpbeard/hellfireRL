@@ -10,7 +10,7 @@
 struct Map {
 
 	Map();
-	std::vector<std::vector<Entity*>> map;
+	std::vector< std::vector<Entity*> > map;
 
 };
 
