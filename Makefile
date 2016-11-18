@@ -5,7 +5,7 @@ LDIR = .
 LIBS = pdcurses
 FLAGS = -L$(LDIR) -l$(LIBS)
 
-hellfireRL.exe:  $(HEADS) $(SRC)
+hellfireRL.exe:  $(HEADS) $(SRC) Makefile
 	$(CC) -o $@ $(SRC) $(FLAGS)
 
 clean:

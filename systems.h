@@ -48,10 +48,14 @@ void moveEnt(Entity* ent, int dir)
 	if(dir == KEY_RIGHT) p->x++;
 }
 
-void playerControl(Entity* ent)
+void playerControl(Entity* ent, Map* m)
 {
+	Position* pp = dynamic_cast<Position*>(ent->components[0]);
 	PlayerControllable* pc = dynamic_cast<PlayerControllable*>(ent->components[2]);
-	if( pc == NULL) return;
+	if( pc == NULL || pp == NULL) return;
+
+	int py = pp->y;
+	int px = pp->x;
 
 	int c = getch();
 	switch(c){

@@ -41,7 +41,7 @@ InPlay::InPlay(Game* game){
 }
 
 void InPlay::update(){
-	playerControl(player);
+	playerControl(player, maps.back());
 	adjustLOS(player, maps.back());
 }
 
