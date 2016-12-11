@@ -51,3 +51,13 @@ Entity* makePillar(int y, int x){
 
 	return pillar;
 }
+
+Entity* makeGoblin(int y, int x){
+	Entity* goblin = new Entity();
+
+	goblin->components[0] = new Position(y, x);
+	goblin->components[1] = new Tile('g', true, 0);
+
+	return goblin;
+
+}

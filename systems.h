@@ -114,7 +114,7 @@ void moveEnt(Entity* ent, int dir, Map* m)
 	}
 }
 
-void playerControl(Entity* ent, Map* m)
+void playerControl(Entity* ent, Map* m, std::vector<Entity*> entList)
 {
 	Position* pp = dynamic_cast<Position*>(ent->components[0]);
 	PlayerControllable* pc = dynamic_cast<PlayerControllable*>(ent->components[2]);
@@ -124,18 +124,55 @@ void playerControl(Entity* ent, Map* m)
 	int px = pp->x;
 
 	int c = getch();
+	bool entBreak = false; // Whether an entity gets in the way
 	switch(c){
 		case KEY_UP:
-			moveEnt(ent, KEY_UP, m);
+			for(int i = 0; i < entList.size(); ++i){
+				Tile* entT = dynamic_cast<Tile*>(entList[i]->components[1]);
+				Position* entP = dynamic_cast<Position*>(entList[i]->components[0]);
+				if(entT != NULL && entP != NULL){
+					if(entP->y == py-1 && entP->x == px && entT->solid == true){
+						entBreak = true;
+					}
+				}
+			}
+			if(!entBreak) moveEnt(ent, KEY_UP, m);
 			break;
 		case KEY_DOWN:
-			moveEnt(ent, KEY_DOWN, m);
+			for(int i = 0; i < entList.size(); ++i){
+				Tile* entT = dynamic_cast<Tile*>(entList[i]->components[1]);
+				Position* entP = dynamic_cast<Position*>(entList[i]->components[0]);
+				if(entT != NULL && entP != NULL){
+					if(entP->y == py+1 && entP->x == px && entT->solid == true){
+						entBreak = true;
+					}
+				}
+			}
+			if(!entBreak) moveEnt(ent, KEY_DOWN, m);
 			break;
 		case KEY_LEFT:
-			moveEnt(ent, KEY_LEFT, m);
+			for(int i = 0; i < entList.size(); ++i){
+				Tile* entT = dynamic_cast<Tile*>(entList[i]->components[1]);
+				Position* entP = dynamic_cast<Position*>(entList[i]->components[0]);
+				if(entT != NULL && entP != NULL){
+					if(entP->y == py && entP->x == px-1 && entT->solid == true){
+						entBreak = true;
+					}
+				}
+			}
+			if(!entBreak) moveEnt(ent, KEY_LEFT, m);
 			break;
 		case KEY_RIGHT:
-			moveEnt(ent, KEY_RIGHT, m);
+			for(int i = 0; i < entList.size(); ++i){
+				Tile* entT = dynamic_cast<Tile*>(entList[i]->components[1]);
+				Position* entP = dynamic_cast<Position*>(entList[i]->components[0]);
+				if(entT != NULL && entP != NULL){
+					if(entP->y == py && entP->x == px+1 && entT->solid == true){
+						entBreak = true;
+					}
+				}
+			}
+			if(!entBreak) moveEnt(ent, KEY_RIGHT, m);
 			break;
 		case 'q':
 			done = true;
@@ -143,7 +180,7 @@ void playerControl(Entity* ent, Map* m)
 	}
 }
 
-void adjustLOS(Entity* ent, Map* curmap)
+void adjustLOS(Entity* ent, Map* curmap, std::vector<Entity*> entList) // NEED TO ADD ENTITIES LIST TO THIS AND MOVE SO PLAYER CAN SEE AND COLLIDE
 {
 	Position* pc = dynamic_cast<Position*>(ent->components[0]);
 	LineOfSight* plos = dynamic_cast<LineOfSight*>(ent->components[3]);
@@ -166,6 +203,7 @@ void adjustLOS(Entity* ent, Map* curmap)
 			int y1 = py;
 			const int x2 = x;
 			const int y2 = y;
+			bool entBreak = false; // Whether an ent gets in the way
 
 			int delta_x(x2 - x1);
 		    // if x1 == x2, then it does not matter what we set here
@@ -181,6 +219,19 @@ void adjustLOS(Entity* ent, Map* curmap)
 			if(bt == NULL) continue;
 			bt->visible = true;
 			bt->revealed = true;
+			for(int z = 0; z < entList.size(); ++z){
+				Tile* entT = dynamic_cast<Tile*>(entList[z]->components[1]);
+				Position* entP = dynamic_cast<Position*>(entList[z]->components[0]);
+				if(entT != NULL && entP != NULL){
+					if(entP->y == y1 && entP->x == x1){
+						entT->visible = true;
+						entT->revealed = true;
+						if(entT->solid) entBreak = true;
+					}
+					//if(entT->solid) break;
+				}
+			}
+			if(entBreak) break;
 
 		    if (delta_x >= delta_y)
 		    {
@@ -203,6 +254,19 @@ void adjustLOS(Entity* ent, Map* curmap)
 					if(bt == NULL) continue;
 					bt->visible = true;
 					bt->revealed = true;
+					for(int z = 0; z < entList.size(); ++z){
+						Tile* entT = dynamic_cast<Tile*>(entList[z]->components[1]);
+						Position* entP = dynamic_cast<Position*>(entList[z]->components[0]);
+						if(entT != NULL && entP != NULL){
+							if(entP->y == y1 && entP->x == x1){
+								entT->visible = true;
+								entT->revealed = true;
+								if(entT->solid) entBreak = true;
+							}
+							// if(entT->solid) break;
+						}
+					}
+					if(entBreak) break;
 					if(bt->solid) break;
 
 		        }
@@ -228,6 +292,19 @@ void adjustLOS(Entity* ent, Map* curmap)
 					if(bt == NULL) continue;
 					bt->visible = true;
 					bt->revealed = true;
+					for(int z = 0; z < entList.size(); ++z){
+						Tile* entT = dynamic_cast<Tile*>(entList[z]->components[1]);
+						Position* entP = dynamic_cast<Position*>(entList[z]->components[0]);
+						if(entT != NULL && entP != NULL){
+							if(entP->y == y1 && entP->x == x1){
+								entT->visible = true;
+								entT->revealed = true;
+								if(entT->solid)  entBreak = true;
+							}
+							// if(entT->solid) break;
+						}
+					}
+					if(entBreak) break;
 					if(bt->solid) break;
 		        }
 		    }

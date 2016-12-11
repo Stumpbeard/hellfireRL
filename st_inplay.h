@@ -17,6 +17,7 @@ struct InPlay : State
     int display[SCREEN_HEIGHT][SCREEN_WIDTH];
     std::vector<Map*> maps;
     Entity* player;
+    std::vector<Entity*> entities;
 };
 
 #endif
